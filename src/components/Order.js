@@ -11,9 +11,11 @@ class Order extends React.Component {
   }
 
   render() {
-    const orders = Object.keys(this.props.orders).map(key => {
-      return { ...this.props.fishes[key], count: this.props.orders[key], key }
-    })
+    const orders = Object.keys(this.props.orders)
+      .map(key => {
+        return { ...this.props.fishes[key], count: this.props.orders[key], key }
+      })
+      .filter(order => order.status)
 
     const totalPrice = formatPrice(
       orders.reduce((total, order) => {

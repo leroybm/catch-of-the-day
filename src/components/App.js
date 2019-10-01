@@ -12,12 +12,19 @@ class App extends React.Component {
     orders: {},
   }
 
+  storeId = this.props.match.params.storeId
+
   componentDidMount() {
-    const { params } = this.props.match
-    this.ref = base.syncState(`${params.storeId}/fishes`, {
+    this.setState({ orders: JSON.parse(localStorage.getItem(this.storeId)) })
+
+    this.ref = base.syncState(`${this.storeId}/fishes`, {
       context: this,
       state: 'fishes',
     })
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem(this.storeId, JSON.stringify(this.state.orders))
   }
 
   componentWillUnmount() {
