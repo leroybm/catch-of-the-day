@@ -15,7 +15,9 @@ class App extends React.Component {
   storeId = this.props.match.params.storeId
 
   componentDidMount() {
-    this.setState({ orders: JSON.parse(localStorage.getItem(this.storeId)) })
+    this.setState({
+      orders: JSON.parse(localStorage.getItem(this.storeId)) || {},
+    })
 
     this.ref = base.syncState(`${this.storeId}/fishes`, {
       context: this,
@@ -29,6 +31,12 @@ class App extends React.Component {
 
   componentWillUnmount() {
     base.removeBinding(this.ref)
+  }
+
+  updateFish = (key, fish) => {
+    const fishes = { ...this.state.fishes }
+    fishes[key] = fish
+    this.setState({ fishes })
   }
 
   createFish = fish => {
@@ -65,6 +73,8 @@ class App extends React.Component {
         <Inventory
           createFish={this.createFish}
           loadSampleFishes={this.loadSampleFishes}
+          fishes={this.state.fishes}
+          updateFish={this.updateFish}
         />
       </div>
     )
