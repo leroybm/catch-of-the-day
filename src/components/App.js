@@ -39,6 +39,12 @@ class App extends React.Component {
     this.setState({ fishes })
   }
 
+  deleteFish = key => {
+    const fishes = { ...this.state.fishes }
+    fishes[key] = null
+    this.setState({ fishes })
+  }
+
   createFish = fish => {
     const fishes = { ...this.state.fishes }
     fishes[`fish${Date.now()}`] = fish
@@ -48,6 +54,12 @@ class App extends React.Component {
   addToOrder = key => {
     const orders = this.state.orders
     orders[key] = orders[key] + 1 || 1
+    this.setState({ orders })
+  }
+
+  deleteOrder = key => {
+    const orders = this.state.orders
+    delete orders[key]
     this.setState({ orders })
   }
 
@@ -69,12 +81,17 @@ class App extends React.Component {
             />
           ))}
         </div>
-        <Order fishes={this.state.fishes} orders={this.state.orders} />
+        <Order
+          fishes={this.state.fishes}
+          orders={this.state.orders}
+          deleteOrder={this.deleteOrder}
+        />
         <Inventory
           createFish={this.createFish}
           loadSampleFishes={this.loadSampleFishes}
           fishes={this.state.fishes}
           updateFish={this.updateFish}
+          deleteFish={this.deleteFish}
         />
       </div>
     )

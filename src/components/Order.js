@@ -2,10 +2,11 @@ import React from 'react'
 import { formatPrice } from '../helpers'
 
 class Order extends React.Component {
-  renderOrder(order) {
+  renderOrder = order => {
     return (
       <li key={order.key}>
         {order.count} kg {order.name} {formatPrice(order.price)}
+        <button onClick={() => this.props.deleteOrder(order.key)}>✕</button>
       </li>
     )
   }
