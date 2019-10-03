@@ -1,13 +1,31 @@
 import React from 'react'
 import { formatPrice } from '../helpers'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 class Order extends React.Component {
   renderOrder = order => {
     return (
-      <li key={order.key}>
-        {order.count} kg {order.name} {formatPrice(order.price)}
-        <button onClick={() => this.props.deleteOrder(order.key)}>✕</button>
-      </li>
+      <CSSTransition
+        classNames="order"
+        key={order.key}
+        timeout={{ enter: 250, exit: 250 }}
+      >
+        <li key={order.key}>
+          <span>
+            <TransitionGroup component="span" className="count">
+              <CSSTransition
+                classNames="count"
+                key={order.count}
+                timeout={{ enter: 500, exit: 500 }}
+              >
+                <span>{order.count}</span>
+              </CSSTransition>
+            </TransitionGroup>
+            kg {order.name} {formatPrice(order.price)}
+          </span>
+          <button onClick={() => this.props.deleteOrder(order.key)}>✕</button>
+        </li>
+      </CSSTransition>
     )
   }
 
@@ -27,7 +45,9 @@ class Order extends React.Component {
     return (
       <div className="order-wrap">
         <h2>Order!</h2>
-        <ul className="order">{orders.map(this.renderOrder)}</ul>
+        <TransitionGroup component="ul" className="order">
+          {orders.map(this.renderOrder)}
+        </TransitionGroup>
         <div className="total">
           Total:
           <strong>{totalPrice}</strong>
